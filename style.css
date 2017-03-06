@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+html, body, #map {
+    height: 100%;
+}
+
+.mycluster{
+    background-color: deepskyblue;
+    border-radius: 3px;
+    background-image: url('home64.png');
+    text-align: center;
+    font-size: 14px;
+}
