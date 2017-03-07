@@ -17,7 +17,25 @@ var map = L.map('map', {
     layers: [streets]
 });
 
-var markers = L.markerClusterGroup();
+var kindergartenMarkers = L.markerClusterGroup({
+    maxClusterRadius: 120,
+    iconCreateFunction: blueIconCreateFunction,
+    //Disable all of the defaults:
+    spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true
+});
+
+var schoolMarkers = L.markerClusterGroup({
+    maxClusterRadius: 120,
+    iconCreateFunction: greenIconCreateFunction,
+    //Disable all of the defaults:
+    spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true
+});
+
+var markersStorage = {
+    "kindergarten": kindergartenMarkers,
+    "school": schoolMarkers
+};
+
 var icon;
 
 var kindergartenIcon = L.icon({
@@ -29,28 +47,47 @@ var schoolIcon = L.icon({
     iconSize: [28, 46]
 });
 
-function iconCreateFunction(cluster) {
+function blueIconCreateFunction(cluster) {
     return L.divIcon({
         html: '<b>' + cluster.getChildCount() + '</b>',
-        className: 'mycluster',
+        className: 'blueCluster',
         iconSize: L.point(32, 32)
     });
 };
 
-/*function getName(feature, layer) {
+function greenIconCreateFunction(cluster) {
+    return L.divIcon({
+        html: '<b>' + cluster.getChildCount() + '</b>',
+        className: 'greenCluster',
+        iconSize: L.point(32, 32)
+    });
+};
+
+/*function getName(feature, marker) {
  if (feature.properties && feature.properties.name) {
  marker.bindPopup(feature.properties.name);
- } else {marker.bindPopup('Неизвестный объект')}
+ } else (marker.bindPopup('Неизвестный объект'))
  };*/
 
 function onEachFeature(feature, layer) {
     if (feature.geometry.type === 'Polygon') {
         var bounds = layer.getBounds();
         var center = bounds.getCenter();
-    };
-    if (feature.properties.amenity === "kindergarten") {
-        icon = kindergartenIcon
-    } else (icon = schoolIcon);
+    }
+    ;
+
+    switch (feature.properties.amenity) {
+        case "kindergarten":
+            icon = kindergartenIcon;
+            break;
+        case "school":
+            icon = schoolIcon;
+            break;
+        default:
+            icon = schoolIcon;
+    }
+    ;
+
     var marker = L.marker(center, {icon: icon});
 
     if (feature.properties && feature.properties.name) {
@@ -58,7 +95,17 @@ function onEachFeature(feature, layer) {
     }
     else (marker.bindPopup('Неизвестный объект'));
     map.setView(center);
-    markers.addLayer(marker);
+    switch (feature.properties.amenity) {
+        case "kindergarten":
+            kindergartenMarkers.addLayer(marker);
+            break;
+        case "school":
+            schoolMarkers.addLayer(marker);
+            break;
+        default:
+            icon = schoolIcon;
+    }
+
 };
 
 var kindergarten = new L.GeoJSON.AJAX("kindergarten.geojson", {
@@ -69,25 +116,12 @@ var school = new L.GeoJSON.AJAX("school.geojson", {
     onEachFeature: onEachFeature
 });
 
-
-var markers = L.markerClusterGroup({
-    maxClusterRadius: 120,
-    iconCreateFunction: iconCreateFunction,
-    //Disable all of the defaults:
-    spiderfyOnMaxZoom: true, showCoverageOnHover: false, zoomToBoundsOnClick: true
-});
-
-map.addLayer(markers);
-
 var baseMaps = {
     "Mapbox": streets,
     "OSM": osm
 };
 
-var overlayMaps = {
-    "kindergarten": kindergarten,
-    "school": school
-};
+var overlayMaps = markersStorage;
 
 L.control.scale().addTo(map);
 
