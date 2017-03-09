@@ -28,13 +28,53 @@ function addDataToMap(data, map) {
     dataLayer.addTo(map);
 }
 
+
+function popUp(feature, layer) {
+    layer.bindPopup(feature.properties.place + "<br>" + feature.properties.mag + " from 10");
+}
+
+
+
 /*$.getJSON("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", function(data) { addDataToMap(data, map); });*/
 
-L.GeoJSON.AJAX("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", {function(data) { addDataToMap(data, map)}});
+/*L.GeoJSON.AJAX("http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson", {function(data) { addDataToMap(data, map)}});*/
 
 
 
 
+$(function () {
+    $('#starttime').datepicker({
+        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+            'Октябрь', 'Ноябрь', 'Декабрь'],
+        dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+        firstDay: 1,
+        maxDate: '0'
+/*        dateFormat: 'dd/mm/yy',
+        altField: "#actualDate",
+        altFormat: 'yy-mm-dd'*/
+    });
+});
+
+$( function() {
+    $( "#endtime" ).datepicker({
+        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+            'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+            'Октябрь', 'Ноябрь', 'Декабрь'],
+        dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+        firstDay: 1,
+        maxDate: '0'
+        // dateFormat: 'dd/mm/yy',
+        // altField: "#actualDate",
+        // altFormat: 'yy-mm-dd'
+    });
+} );
+
+
+var geojsonLayer = new L.GeoJSON.AJAX("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime="+ starttime.value +"&endtime=" + endtime.value, {onEachFeature:popUp});
+/*var geojsonLayer = new L.GeoJSON.AJAX("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02", {onEachFeature:popUp});*/
+streets.addTo(map);
+geojsonLayer.addTo(map);
 
 
 L.control.scale().addTo(map);

@@ -8,11 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" data-require="leaflet@0.7.3" data-semver="0.7.3" />
     <link rel="stylesheet" href="Leaflet.markercluster-leaflet-0.7/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!--<link rel="stylesheet" href="leaflet-geosearch-develop/docs/dist/style.css" />-->
     <link rel="stylesheet" href="style.css" />
-
-
-
 
 </head>
 
@@ -20,11 +18,15 @@
 
 <div id="map">
 </div>
-
-
-
+<div id="inputPanel">
+<p>Выберите период землетрясений:</p>
+<span>Начиная с: <input type="text" id="starttime"></span>
+<span>до: <input type="text" id="endtime"></span>
+<button type="submit">Отобразить</button>
+</div>
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js" data-require="jquery@2.0.3 current" data-semver="2.0.3"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js" data-require="leaflet@0.7.3" data-semver="0.7.3"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 <script src="Leaflet.markercluster-leaflet-0.7/dist/leaflet.markercluster.js"></script>

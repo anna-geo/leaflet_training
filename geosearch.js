@@ -1,6 +1,9 @@
 /**
  * Created by isaeva on 06.03.2017.
  */
+
+/*
+
 import L from './leaflet.js';
 import {
     GeoSearchControl,
@@ -14,4 +17,4 @@ const searchControl = new GeoSearchControl({
 });
 
 const map = new L.Map('map');
-map.addControl(searchControl);
+map.addControl(searchControl);*/
